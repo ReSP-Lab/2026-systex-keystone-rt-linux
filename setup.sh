@@ -7,7 +7,5 @@ sudo apt install autoconf automake autotools-dev bc bison build-essential curl e
 
 echo "Setting up keystone"
 
-mkdir keystone
-cd keystone
 git clone --recurse-submodules https://github.com/keystone-enclave/keystone.git
 

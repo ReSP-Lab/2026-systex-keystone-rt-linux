@@ -38,7 +38,7 @@ A build can be configured with the following options (along with their default v
 
 - `BUILDROOT_CONFIGFILE=qemu_riscv$(KEYSTONE_BITS)_virt_defconfig`: Configures the buildroot config file to use.
 
-- `BUILDROOT_TARGET=all`: Configures the target to be built. (e.g. `k`eystone-sm`, for the security monitor)
+- `BUILDROOT_TARGET=all`: Configures the target to be built. (e.g. `keystone-sm`, for the security monitor)
 
 
 ## 2.2. Rebuilding Changed Components
@@ -98,6 +98,11 @@ Then find the included files (i.e. enclave applications) in `/usr/share/keystone
 
 ## 3.2. Debugging Keystone in QEMU
 
+
+> Error ?
+>
+> Change in gdb/generic line 10 : `{builddir}/linux-6.1.32/vmlinux-gdb.py -> {builddir}/linux-6.1.32/scripts/gdb/vmlinux-gdb.py` ???
+
 To debug a Keystone build with GDB, run the following command to start QEMU in debug mode:
 
 ```KEYSTONE_DEBUG=y make run```
@@ -111,5 +116,7 @@ This will connect to the GDB server running in QEMU. You can then use GDB as nor
 - `pmp-clear`: Clear the PMP CSRs
 
 - `pmp-dump`: Show the current state of the PMP CSRs
+
+To resume the QEMU instance, you need to pass `continue` to the GDB server.
 
 

@@ -122,4 +122,3 @@ To resume the QEMU instance, you need to pass `continue` to the GDB server.
 
 
 
-`for i in $(seq 4); do yes > /dev/null & done`

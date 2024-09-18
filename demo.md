@@ -1,26 +1,55 @@
-- [1. Necessary Dependencies and keystone repo setup](#1-necessary-dependencies-and-keystone-repo-setup)
-- [2. Compile Sources](#2-compile-sources)
-  - [2.1. Build All Components](#21-build-all-components)
-  - [2.2. Rebuilding Changed Components](#22-rebuilding-changed-components)
-  - [2.3. Appendix A: Configuring Buildroot and the Linux Kernel](#23-appendix-a-configuring-buildroot-and-the-linux-kernel)
-  - [2.4. Appendix B: Debugging Failed Builds](#24-appendix-b-debugging-failed-builds)
-- [3. Running and Testing Keystone on QEMU](#3-running-and-testing-keystone-on-qemu)
-  - [3.1. Launching Keystone in QEMU](#31-launching-keystone-in-qemu)
-  - [3.2. Debugging Keystone in QEMU](#32-debugging-keystone-in-qemu)
+- [1. Custom scripts](#1-custom-scripts)
+- [2. Keystone demo documentation](#2-keystone-demo-documentation)
+  - [2.1. Installation](#21-installation)
+    - [2.1.1. dependencies](#211-dependencies)
+    - [2.1.2. 2.2 Keystone installation](#212-22-keystone-installation)
+  - [2.2. Compile Sources](#22-compile-sources)
+    - [2.2.1. Build All Components](#221-build-all-components)
+    - [2.2.2. Rebuilding Changed Components](#222-rebuilding-changed-components)
+    - [2.2.3. Appendix A: Configuring Buildroot and the Linux Kernel](#223-appendix-a-configuring-buildroot-and-the-linux-kernel)
+    - [2.2.4. Appendix B: Debugging Failed Builds](#224-appendix-b-debugging-failed-builds)
+  - [2.3. Running and Testing Keystone on QEMU](#23-running-and-testing-keystone-on-qemu)
+    - [2.3.1. Launching Keystone in QEMU](#231-launching-keystone-in-qemu)
+    - [2.3.2. Debugging Keystone in QEMU](#232-debugging-keystone-in-qemu)
 
+
+
+
+# 1. Custom scripts
+
+>Theses scripts are made to easily setup and use the project as alternative to the official keystone demo instruction that can be found in the next section.
+
+- Dependencies and keystone setup: `sudo ./setup.sh`
+- Build keystone: `./build.sh`
+- Rebuild keystone (also copy the example from **/enclave_examples**): `./rebuild.sh`
+- Connect to the qemu terminal: `./qemu_connect.sh`
+- Clean the entire keystone install: `./clean.sh`
+
+# 2. Keystone demo documentation
 
 >This is the QEMU demo documentation from the [keystone docs](http://docs.keystone-enclave.org/en/latest/Getting-Started/Running-Keystone-with-QEMU.html)
 
-# 1. Necessary Dependencies and keystone repo setup
+## 2.1. Installation
 
-The first two step of the demo are installing the dependencies and setting up the keystone repo. The `setup.sh` script can be used to do this directly.
+### 2.1.1. dependencies
 
-```sudo ./setup.sh```
+```
+sudo apt update
+sudo apt install autoconf automake autotools-dev bc \
+bison build-essential curl expat jq libexpat1-dev flex gawk gcc git \
+gperf libgmp-dev libmpc-dev libmpfr-dev libtool texinfo tmux \
+patchutils zlib1g-dev wget bzip2 patch vim-common lbzip2 python3 \
+pkg-config libglib2.0-dev libpixman-1-dev libssl-dev screen \
+device-tree-compiler expect makeself unzip cpio rsync cmake ninja-build p7zip-full
+```
 
+### 2.1.2. 2.2 Keystone installation
 
-# 2. Compile Sources
+```git clone --recurse-submodules https://github.com/keystone-enclave/keystone.git```
 
-## 2.1. Build All Components
+## 2.2. Compile Sources
+
+### 2.2.1. Build All Components
 
 We use Make and Buildroot as a build system. The top-level Makefile is located in the root directory of the repository and is the main frontend to the build system. It collects configuration options and initiates the build process, which itself takes place in Buildroot.
 
@@ -41,7 +70,7 @@ A build can be configured with the following options (along with their default v
 - `BUILDROOT_TARGET=all`: Configures the target to be built. (e.g. `keystone-sm`, for the security monitor)
 
 
-## 2.2. Rebuilding Changed Components
+### 2.2.2. Rebuilding Changed Components
 
 In a very common workflow, a developer would make changes to a component and then rebuild the component. As built packages are synced to various other places by Buildroot, this can be prone to stale and thus incorrect builds.
 
@@ -53,7 +82,7 @@ A stale source is then removed by using the following command:
 
 This will remove the stale source directory. Afterwards, a new build can be initiated as usual.
 
-## 2.3. Appendix A: Configuring Buildroot and the Linux Kernel
+### 2.2.3. Appendix A: Configuring Buildroot and the Linux Kernel
 
 There are convenience targets in the top-level Makefile to configure both Buildroot and the Linux kernel.
 
@@ -67,14 +96,14 @@ To configure the Linux kernel, use the following command:
 
 These commands open a menu-based configuration interface. After making changes, save the configuration and exit the interface. The Makefile takes care of placing the configuration files in the correct locations.
 
-## 2.4. Appendix B: Debugging Failed Builds
+### 2.2.4. Appendix B: Debugging Failed Builds
 
 As the Buildroot output is very verbose, only certain parts of it are printed to `stdout` by default. The full output of a build is written to `build-$PLATFORM$BITS/build.log`, which can be used to debug failed builds.
 
 
-# 3. Running and Testing Keystone on QEMU
+## 2.3. Running and Testing Keystone on QEMU
 
-## 3.1. Launching Keystone in QEMU
+### 2.3.1. Launching Keystone in QEMU
 
 The following command will run QEMU, starting execution from the emulated silicon root of trust. The root of trust then jumps to the SM, and the SM boots Linux!
 
@@ -96,7 +125,7 @@ Then find the included files (i.e. enclave applications) in `/usr/share/keystone
 
 ```/usr/share/keystone/examples/hello.ke```
 
-## 3.2. Debugging Keystone in QEMU
+### 2.3.2. Debugging Keystone in QEMU
 
 
 > Error ?

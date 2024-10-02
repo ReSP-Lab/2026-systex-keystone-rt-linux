@@ -1,20 +1,31 @@
-set(eapp_bin holdup-inf)
-set(eapp_src eapp/eapp.c)
-set(host_bin holdup-inf-runner)
-set(host_src host/host.cpp)
-set(package_name "holdup-inf.ke")
-set(package_script "./holdup-inf-runner holdup-inf eyrie-rt loader.bin")
+set(eapp_bin repeat-task)
+set(eapp_src eapp/eapp_native.c)
+set(host_bin repeat-task-runner)
+set(host_src host/host_native.cpp)
+set(package_name "repeat-task.ke")
+set(package_script "./repeat-task-runner repeat-task eyrie-rt loader.bin")
 set(eyrie_plugins "io_syscall linux_syscall env_setup")
 
 # eapp
 
 add_executable(${eapp_bin} ${eapp_src})
-target_link_libraries(${eapp_bin} "-static")
+target_link_libraries(${eapp_bin} "-static" ${KEYSTONE_LIB_EAPP} ${KEYSTONE_LIB_EDGE})
+
+target_include_directories(${eapp_bin}
+  PUBLIC ${KEYSTONE_SDK_DIR}/include/app
+  PUBLIC ${KEYSTONE_SDK_DIR}/include/edge)
 
 # host
 
 add_executable(${host_bin} ${host_src})
 target_link_libraries(${host_bin} ${KEYSTONE_LIB_HOST} ${KEYSTONE_LIB_EDGE})
+# add -std=c++11 flag
+set_target_properties(${host_bin}
+  PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED YES CXX_EXTENSIONS NO
+)
+target_include_directories(${host_bin}
+  PUBLIC ${KEYSTONE_SDK_DIR}/include/host
+  PUBLIC ${KEYSTONE_SDK_DIR}/include/edge)
 
 # add target for Eyrie runtime (see keystone.cmake)
 

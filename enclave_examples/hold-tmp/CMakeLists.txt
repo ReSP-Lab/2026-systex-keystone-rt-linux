@@ -1,9 +1,9 @@
-set(eapp_bin prime-time)
+set(eapp_bin hold-tmp)
 set(eapp_src eapp/eapp.c)
-set(host_bin prime-time-runner)
+set(host_bin hold-tmp-runner)
 set(host_src host/host.cpp)
-set(package_name "prime-time.ke")
-set(package_script "./prime-time-runner prime-time eyrie-rt loader.bin")
+set(package_name "hold-tmp.ke")
+set(package_script "./hold-tmp-runner hold-tmp eyrie-rt loader.bin")
 set(eyrie_plugins "io_syscall linux_syscall env_setup")
 
 # eapp

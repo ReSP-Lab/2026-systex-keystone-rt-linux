@@ -1,31 +1,20 @@
-set(eapp_bin holdup-period)
+set(eapp_bin hold-cycle)
 set(eapp_src eapp/eapp.c)
-set(host_bin holdup-period-runner)
+set(host_bin hold-cycle-runner)
 set(host_src host/host.cpp)
-set(package_name "holdup-period.ke")
-set(package_script "./holdup-period-runner holdup-period eyrie-rt loader.bin")
-set(eyrie_plugins "none")
+set(package_name "hold-cycle.ke")
+set(package_script "./hold-cycle-runner hold-cycle eyrie-rt loader.bin")
+set(eyrie_plugins "io_syscall linux_syscall env_setup")
 
 # eapp
 
 add_executable(${eapp_bin} ${eapp_src})
-target_link_libraries(${eapp_bin} "-nostdlib -static" ${KEYSTONE_LIB_EAPP} ${KEYSTONE_LIB_EDGE})
-
-target_include_directories(${eapp_bin}
-  PUBLIC ${KEYSTONE_SDK_DIR}/include/app
-  PUBLIC ${KEYSTONE_SDK_DIR}/include/edge)
+target_link_libraries(${eapp_bin} "-static")
 
 # host
 
 add_executable(${host_bin} ${host_src})
 target_link_libraries(${host_bin} ${KEYSTONE_LIB_HOST} ${KEYSTONE_LIB_EDGE})
-# add -std=c++11 flag
-set_target_properties(${host_bin}
-  PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED YES CXX_EXTENSIONS NO
-)
-target_include_directories(${host_bin}
-  PUBLIC ${KEYSTONE_SDK_DIR}/include/host
-  PUBLIC ${KEYSTONE_SDK_DIR}/include/edge)
 
 # add target for Eyrie runtime (see keystone.cmake)
 

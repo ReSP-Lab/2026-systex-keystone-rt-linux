@@ -3,7 +3,7 @@
 	url = https://github.com/OscarVsp/keystone.git
 	branch = dev-preempt-rt
 [submodule "keystone-6.6"]
-	path = keystone-rt
+	path = keystone-6.6
 	url = https://github.com/OscarVsp/keystone.git
 	branch = dev-kernel-6.6
 [submodule "rt-linux/buildroot"]

@@ -23,9 +23,9 @@
 
 ![alt text](keystone_hybrid_stock_vs_realtime_1t.png)
 
-### Stock vs RT (2 threads)
+### RT 1 thread vs RT 2 threads
 
-![alt text](keystone_hybrid_stock_vs_realtime_2t.png)
+![alt text](keystone_hybrid_realtime_1t_vs_2t.png)
 
 ### Linux process vs keystone enclaves (rt)
 

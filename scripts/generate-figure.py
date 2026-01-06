@@ -200,53 +200,51 @@ def save(ax, name, path):
 
 if __name__ == "__main__":
 
-    cpu = 4
-    start_skip = 0
     x_log = True
     figure_dir = "results/figures"
 
     # Hifive Unmtached
-    print(f'--- Hifive Unmatched ---')
+    print(f'--- Linux ---')
     print(" stock")
-    data_hifive_unmatched_stock = load(f"results/hifive_unmatched/stock/hifive_unmatched_stock_cyclictest.log", cpu, start_skip)
+    data_hifive_unmatched_stock = load(f"results/hifive_unmatched/stock/hifive_unmatched_stock_cyclictest.log", cpu=4, start_skip=1000)
     print(" realtime")
-    data_hifive_unmatched_rt = load(f"results/hifive_unmatched/realtime/hifive_unmatched_realtime_cyclictest.log", cpu, start_skip)
+    data_hifive_unmatched_rt = load(f"results/hifive_unmatched/realtime/hifive_unmatched_realtime_cyclictest.log", cpu=4, start_skip=1000)
 
     ax = draw_hist(datas=[data_hifive_unmatched_stock, data_hifive_unmatched_rt], labels= [f"stock",f"preempt-rt"], bins=50, unit='us', x_log=x_log)
-    save(ax, f"hifive_unmatched_stock_vs_realtime", figure_dir)
+    save(ax, f"linux_stock_vs_realtime", figure_dir)
     ax.clear()
 
 
     # Keystone mixted
     print(f'--- keystone Mixted ---')
     print(" stock")
-    data_keystone_mixted_stock = load(f"results/keystone_mixted/stock/keystone_mixted_stock_cyclictest.log", cpu, start_skip)
+    data_keystone_mixted_stock = load(f"results/keystone_mixted/stock/keystone_mixted_stock_cyclictest.log", cpu=4, start_skip=1000)
     print(" realtime")
-    data_keystone_mixted_rt = load(f"results/keystone_mixted/realtime/keystone_mixted_realtime_cyclictest.log", cpu, start_skip)
+    data_keystone_mixted_rt = load(f"results/keystone_mixted/realtime/keystone_mixted_realtime_cyclictest.log", cpu=4, start_skip=1000)
 
     ax = draw_hist(datas=[data_keystone_mixted_stock, data_keystone_mixted_rt], labels=[f"stock", f"preempt-rt"], bins=50, unit='us', x_log=x_log)
     save(ax, f"keystone_mixted_stock_vs_realtime", figure_dir)
     ax.clear()
 
     ax = draw_hist(datas=[data_hifive_unmatched_rt, data_keystone_mixted_rt], labels=[f"w/o keystone", f"w/ keystone"], bins=50, unit='us', x_log=x_log)
-    save(ax, f"keystone_realtime_linux_vs_mixted", figure_dir)
+    save(ax, f"realtime_linux_vs_keystone_mixted", figure_dir)
     ax.clear()
 
     # Keystone hybrid
     print(f'--- keystone Hybrid ---')
     print(" stock")
-    data_keystone_hybrid_1_stock = load(f"results/keystone_hybrid/stock/keystone_hybrid_stock_1_cyclictest.log", cpu, start_skip)
+    data_keystone_hybrid_1_stock = load(f"results/keystone_hybrid/stock/keystone_hybrid_stock_1_cyclictest.log", cpu=1, start_skip=0)
     print(" realtime 1th")
-    data_keystone_hybrid_1_rt = load(f"results/keystone_hybrid/realtime/keystone_hybrid_realtime_1_cyclictest.log", cpu)
+    data_keystone_hybrid_1_rt = load(f"results/keystone_hybrid/realtime/keystone_hybrid_realtime_1_cyclictest.log", cpu=1, start_skip=0)
     print(" realtime 2th")
-    data_keystone_hybrid_2_rt = load(f"results/keystone_hybrid/realtime/keystone_hybrid_realtime_2_cyclictest.log", cpu)
+    data_keystone_hybrid_2_rt = load(f"results/keystone_hybrid/realtime/keystone_hybrid_realtime_2_cyclictest.log", cpu=2, start_skip=0)
 
     ax = draw_hist(datas=[data_keystone_hybrid_1_stock, data_keystone_hybrid_1_rt], labels=[f"stock", f"preempt-rt"], bins=50, unit='ms', x_log=x_log)
     save(ax, f"keystone_hybrid_stock_vs_realtime_1t", figure_dir)
     ax.clear()
 
-    ax = draw_hist(datas=[data_keystone_hybrid_1_stock, data_keystone_hybrid_1_rt, data_keystone_hybrid_2_rt], labels=["stock", f"preempt-rt (1 th)", f"preempt-rt (2 th)"], bins=50, unit='ms', x_log=x_log)
-    save(ax, f"keystone_hybrid_stock_vs_realtime_2t", figure_dir)
+    ax = draw_hist(datas=[data_keystone_hybrid_1_rt, data_keystone_hybrid_2_rt], labels=[f"preempt-rt (1th)", f"preempt-rt (2 th)"], bins=50, unit='ms', x_log=x_log)
+    save(ax, f"keystone_hybrid_realtime_1t_vs_2t", figure_dir)
     ax.clear()
 
     ax = draw_hist(datas=[data_keystone_mixted_stock, data_keystone_hybrid_1_stock], labels=[f"Linux process", f"Keystone enclave"], bins=50, unit='ms', x_log=x_log)

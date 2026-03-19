@@ -2,7 +2,3 @@
 	path = keystone-rt
 	url = https://github.com/OscarVsp/keystone.git
 	branch = dev-preempt-rt
-[submodule "rt-linux/buildroot"]
-	path = rt-linux/buildroot
-	url = https://github.com/buildroot/buildroot.git
-	branch = 2024.02.x

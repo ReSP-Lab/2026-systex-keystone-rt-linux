@@ -22,16 +22,17 @@ device-tree-compiler expect makeself unzip cpio rsync cmake ninja-build p7zip-fu
 
 The buildroot configs are located in [overlays/keystone/configs](keystone-rt/overlays/keystone/configs) under `riscv64_hifive_unmatched_defconfig` and `riscv64_hifive_unmatched_rt_defconfig`.
 
+
 They can be edited using the following commands
 
 ```bash
-make KEYSTONE_PLATFORM=hifive_unmatched -C buildroot-configure
+make KEYSTONE_PLATFORM=hifive_unmatched -C keystone-rt buildroot-configure
 ```
 
 and
 
 ```bash
-make RT=y KEYSTONE_PLATFORM=hifive_unmatched -C buildroot-configure
+make RT=y KEYSTONE_PLATFORM=hifive_unmatched -C keystone-rt buildroot-configure
 ```
 
 The respective linux config are located in [overlays/keystone/board/sifive/hifive-unmatched](keystone-rt/overlays/keystone/board/sifive/hifive-unmatched) under `linux-sifive-unmatched-defconfig` and `linux-sifive-unmatched-rt-defconfig`.
@@ -39,13 +40,13 @@ The respective linux config are located in [overlays/keystone/board/sifive/hifiv
 They can be edited using the following commands
 
 ```bash
-make KEYSTONE_PLATFORM=hifive_unmatched -C linux-configure
+make KEYSTONE_PLATFORM=hifive_unmatched -C keystone-rt linux-configure
 ```
 
 and
 
 ```bash
-make RT=y KEYSTONE_PLATFORM=hifive_unmatched -C linux-configure
+make RT=y KEYSTONE_PLATFORM=hifive_unmatched -C keystone-rt linux-configure
 ```
 
 For more information on the available commands and arguments, see the [keystone documentation](https://docs.keystone-enclave.org/en/latest/Getting-Started/QEMU-Compile-Sources.html)

@@ -85,4 +85,4 @@ __pycache__
 rt-linux/targets/*/*/output/
 
 *.log
-paper/eurosp2023-template/.DS_Store
+*.img

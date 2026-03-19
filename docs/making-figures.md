@@ -14,7 +14,19 @@ pip install -r results/requirements
 
 ## Configuration
 
-The bottom section of the file contains the configuration to load each measurement file and to create the graph. The current configuration correspond to the one used for the article. You can comment out the part you do not want/need.
+The measurements made for the article are available in the [results/archive.tar.gz](results/archive.tar.gz) archive. The expected structure is the following:
+
+```
+.
+└── results/
+    ├── figures/
+    ├── hifive_unmatched/
+    ├── keystone-hybrid/
+    ├── keystone-mixted/
+    └── enclave-startup.log
+```
+
+The bottom section of the [results/generate-figures.py](results/generate-figures.py) file contains the configuration to load each measurement files and create the figures.
 
 ## Usage
 

@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import os
+import matplotlib.colors as mcolors
 
 def load(name, start_skip = 0, skiprows=9):
     
@@ -26,7 +27,11 @@ def load(name, start_skip = 0, skiprows=9):
     return data
 
 
-def draw_hist(datas, labels=None, alphas=None, bins=100, colors = ["#1053cf", "#e69822", "#818181"], unit='us', x_log = False, bin_edges=None):
+def draw_hist(datas, labels=None, alphas=None, alpha=0.8, bins=100, unit='us', x_log = False, bin_edges=None, grayscale=grayscale):
+    # Extract data, colors, hatches from dicts
+    data_list = [d['data'] for d in datas]
+    colors = [d['color'] for d in datas]
+
     plt.rcParams.update({
         'font.size': 20,           # Base font size
         'axes.labelsize': 22,      # Axis labels
@@ -43,7 +48,7 @@ def draw_hist(datas, labels=None, alphas=None, bins=100, colors = ["#1053cf", "#
 
     datas_plot = []
 
-    for i, data in enumerate(datas):
+    for i, data in enumerate(data_list):
         data_temp = data.copy()
         if unit.lower() == 'ms':
             data_temp["Latency"] = data_temp["Latency"] / 1000
@@ -64,11 +69,21 @@ def draw_hist(datas, labels=None, alphas=None, bins=100, colors = ["#1053cf", "#
         else:
             bin_edges = np.linspace(combined_min, combined_max, bins + 1)
 
-    if alphas == None:
-        alphas = [0.8 for _ in range(len(datas))]
+    if alphas is not None:
+        alphas = [1.0 if i==0 else alpha for i in range(len(datas))]
 
     if labels == None:
         labels = [f"dataset_{i}" for i in range(len(datas))]
+
+    if grayscale:
+        # Convert colors to grayscale equivalents
+        gray_colors = []
+        for c in colors:
+            rgb = mcolors.to_rgb(c)
+            # Use luminance formula for grayscale
+            gray = 0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]
+            gray_colors.append((gray, gray, gray))
+        colors = gray_colors
 
     for i in range(len(datas)):
         normalization_factor = len(datas_plot[i]["Latency"]) / min_sample_size
@@ -78,8 +93,14 @@ def draw_hist(datas, labels=None, alphas=None, bins=100, colors = ["#1053cf", "#
         
         bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
         bin_width = bin_edges[1:] - bin_edges[:-1]
-        ax.bar(bin_centers, normalized_counts, width=bin_width, 
-               color=colors[i], label=labels[i], alpha=alphas[i])
+        ax.bar(
+            bin_centers,
+            normalized_counts,
+            width=bin_width, 
+            color=colors[i],
+            label=labels[i],
+            alpha=alphas[i]
+        )
     
     ax.set_yscale("log")
     if x_log:
@@ -102,76 +123,83 @@ def save(ax, name, path):
 
 if __name__ == "__main__":
 
-    x_log = True
     result_dir = "results"
     figure_dir = f"{result_dir}/figures"
 
+    x_log = True
+    bins=50
+    unit='us'
+    grayscale=False
+    colors = [ "#163F5F", "#4793CA", "#C56824", "#FFCB9F", "#572F37", "#CC6D6F", "#38736B", "#B6DDD8"]
+    
     # Hifive Unmtached
     print(f'--- Linux ---')
     print(" stock")
-    data_hifive_unmatched_stock = load(f"{result_dir}/hifive_unmatched/stock/hifive_unmatched_stock_cyclictest.log", start_skip=1000)
+    data_hifive_unmatched_stock = {'data':load(f"{result_dir}/hifive_unmatched/stock/hifive_unmatched_stock_cyclictest.log", start_skip=1000), "color":colors[0]}
     print(" realtime")
-    data_hifive_unmatched_rt = load(f"{result_dir}/hifive_unmatched/realtime/hifive_unmatched_realtime_cyclictest.log", start_skip=1000)
-
-    ax = draw_hist(datas=[data_hifive_unmatched_stock, data_hifive_unmatched_rt], labels= [f"stock",f"preempt-rt"], bins=50, unit='us', x_log=x_log)
+    data_hifive_unmatched_rt = {'data':load(f"{result_dir}/hifive_unmatched/realtime/hifive_unmatched_realtime_cyclictest.log", start_skip=1000), "color":colors[1]}
+    
+    ax = draw_hist(datas=[data_hifive_unmatched_stock, data_hifive_unmatched_rt], labels= [f"stock",f"preempt-rt"], bins=bins, unit=unit, x_log=x_log, grayscale=grayscale)
     save(ax, f"linux_stock_vs_realtime_normalized", figure_dir)
-    ax.clear()
-
+    ax.clear()    
+    
     # Keystone mixted
     print(f'--- keystone Mixted ---')
     print(" stock")
-    data_keystone_mixted_stock = load(f"{result_dir}/keystone_mixted/stock/keystone_mixted_stock_cyclictest.log", start_skip=1000)
+    data_keystone_mixted_stock = {'data':load(f"{result_dir}/keystone_mixted/stock/keystone_mixted_stock_cyclictest.log", start_skip=1000), "color":colors[2]}
     print(" realtime")
-    data_keystone_mixted_rt = load(f"{result_dir}/keystone_mixted/realtime/keystone_mixted_realtime_cyclictest.log", start_skip=1000)
-
-    ax = draw_hist(datas=[data_keystone_mixted_stock, data_keystone_mixted_rt], labels=[f"stock", f"preempt-rt"], bins=50, unit='us', x_log=x_log)
+    data_keystone_mixted_rt = {'data':load(f"{result_dir}/keystone_mixted/realtime/keystone_mixted_realtime_cyclictest.log", start_skip=1000), "color":colors[3]}
+    
+    ax = draw_hist(datas=[data_keystone_mixted_stock, data_keystone_mixted_rt], labels=[f"stock", f"preempt-rt"], bins=bins, unit=unit, x_log=x_log, grayscale=grayscale)
     save(ax, f"keystone_mixted_stock_vs_realtime_normalized", figure_dir)
     ax.clear()
 
-    ax = draw_hist(datas=[data_hifive_unmatched_rt, data_keystone_mixted_rt], labels=[f"w/o keystone", f"w/ keystone"], bins=50, unit='us', x_log=x_log)
+    ax = draw_hist(datas=[data_hifive_unmatched_rt, data_keystone_mixted_rt], labels=[f"w/o keystone", f"w/ keystone"], bins=bins, unit=unit, x_log=x_log, grayscale=grayscale)
     save(ax, f"realtime_linux_vs_keystone_mixted_normalized", figure_dir)
     ax.clear()
-
+    
     # Enclave startup
     print(f'--- keystone enclave startup ---')
     print(" stock")
-    data_keystone_enclave_startup = load(f"{result_dir}/enclave-startup.log", start_skip=0,skiprows=0)
-    ax = draw_hist(datas=[data_keystone_enclave_startup], labels=[f"startup"], bins=50, unit='us', x_log=x_log, bin_edges=np.logspace(np.log10(740000), np.log10(790000), 51))
+    data_keystone_enclave_startup = {'data':load(f"{result_dir}/enclave-startup.log", start_skip=0,skiprows=0), "color":"#477E3E"}
+    
+    ax = draw_hist(datas=[data_keystone_enclave_startup], labels=[f"startup"], bins=bins, unit=unit, x_log=x_log, bin_edges=np.logspace(np.log10(740000), np.log10(790000), 51), grayscale=grayscale)
     save(ax, f"keystone_enclave_startup", figure_dir)
     ax.clear()
-
+    
     # Keystone hybrid
     print(f'--- keystone Hybrid ---')
     print(" stock 1th")
-    data_keystone_hybrid_1_stock = load(f"{result_dir}/keystone_hybrid/stock/keystone_hybrid_stock_1_cyclictest.log", start_skip=0)
-    print(" stock 2th")
-    data_keystone_hybrid_2_stock = load(f"{result_dir}/keystone_hybrid/stock/keystone_hybrid_stock_2_cyclictest.log", start_skip=0)
+    data_keystone_hybrid_1_stock = {'data':load(f"{result_dir}/keystone_hybrid/stock/keystone_hybrid_stock_1_cyclictest.log", start_skip=0), "color":colors[4]}
     print(" realtime 1th")
-    data_keystone_hybrid_1_rt = load(f"{result_dir}/keystone_hybrid/realtime/keystone_hybrid_realtime_1_cyclictest.log", start_skip=0)
+    data_keystone_hybrid_1_rt = {'data':load(f"{result_dir}/keystone_hybrid/realtime/keystone_hybrid_realtime_1_cyclictest.log", start_skip=0), "color":colors[5]}
+    print(" stock 2th")
+    data_keystone_hybrid_2_stock = {'data':load(f"{result_dir}/keystone_hybrid/stock/keystone_hybrid_stock_2_cyclictest.log", start_skip=0), "color":colors[6]}
     print(" realtime 2th")
-    data_keystone_hybrid_2_rt = load(f"{result_dir}/keystone_hybrid/realtime/keystone_hybrid_realtime_2_cyclictest.log", start_skip=0)
-
-    ax = draw_hist(datas=[data_keystone_hybrid_1_stock, data_keystone_hybrid_1_rt], labels=[f"stock", f"preempt-rt"], bins=50, unit='us', x_log=x_log)
+    data_keystone_hybrid_2_rt = {'data':load(f"{result_dir}/keystone_hybrid/realtime/keystone_hybrid_realtime_2_cyclictest.log", start_skip=0), "color":colors[7]}
+    
+    ax = draw_hist(datas=[data_keystone_hybrid_1_stock, data_keystone_hybrid_1_rt], labels=[f"stock", f"preempt-rt"], bins=bins, unit=unit, x_log=x_log, grayscale=grayscale)
     save(ax, f"keystone_hybrid_stock_vs_realtime_1t_normalized", figure_dir)
     ax.clear()
 
-    ax = draw_hist(datas=[data_keystone_hybrid_2_stock, data_keystone_hybrid_2_rt], labels=[f"stock", f"preempt-rt"], bins=50, unit='us', x_log=x_log)
+    ax = draw_hist(datas=[data_keystone_hybrid_2_stock, data_keystone_hybrid_2_rt], labels=[f"stock", f"preempt-rt"], bins=bins, unit=unit, x_log=x_log, grayscale=grayscale)
     save(ax, f"keystone_hybrid_stock_vs_realtime_2t_normalized", figure_dir)
     ax.clear()
 
-    ax = draw_hist(datas=[data_keystone_hybrid_1_rt, data_keystone_hybrid_2_rt], labels=[f"1 thread", f"2 threads"], bins=50, unit='us', x_log=x_log)
+    ax = draw_hist(datas=[data_keystone_hybrid_1_rt, data_keystone_hybrid_2_rt], labels=[f"1 thread", f"2 threads"], bins=bins, unit=unit, x_log=x_log, grayscale=grayscale)
     save(ax, f"keystone_hybrid_realtime_1t_vs_2t_normalized", figure_dir)
     ax.clear()
 
-    ax = draw_hist(datas=[data_keystone_hybrid_1_stock, data_keystone_hybrid_2_stock], labels=[f"1 thread", f"2 threads"], bins=50, unit='us', x_log=x_log)
+    ax = draw_hist(datas=[data_keystone_hybrid_1_stock, data_keystone_hybrid_2_stock], labels=[f"1 thread", f"2 threads"], bins=bins, unit=unit, x_log=x_log, grayscale=grayscale)
     save(ax, f"keystone_hybrid_stock_1t_vs_2t_normalized", figure_dir)
     ax.clear()
-
-    ax = draw_hist(datas=[data_keystone_mixted_stock, data_keystone_hybrid_1_stock], labels=[f"Linux process", f"Keystone enclave"], bins=50, unit='us', x_log=x_log)
+    
+    # Bonus
+    ax = draw_hist(datas=[data_keystone_mixted_stock, data_keystone_hybrid_1_stock], labels=[f"Linux process", f"Keystone enclave"], bins=bins, unit=unit, x_log=x_log, alpha=1.0, grayscale=grayscale)
     save(ax, f"keystone_stock_mixted_vs_hybrid_normalized", figure_dir)
     ax.clear()
 
-    ax = draw_hist(datas=[data_keystone_mixted_rt, data_keystone_hybrid_1_rt], labels=[f"Linux process", f"Keystone enclave"], bins=50, unit='us', x_log=x_log)
+    ax = draw_hist(datas=[data_keystone_mixted_rt, data_keystone_hybrid_1_rt], labels=[f"Linux process", f"Keystone enclave"], bins=bins, unit=unit, x_log=x_log, alphas=[0.8, 0.8], grayscale=grayscale)
     save(ax, f"keystone_realtime_mixted_vs_hybrid_normalized", figure_dir)
     ax.clear()
 

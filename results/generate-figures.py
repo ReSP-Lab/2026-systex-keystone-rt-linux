@@ -29,7 +29,7 @@ def load(name, start_skip = 0, skiprows=9):
     return data
 
 
-def draw_hist(datas, labels=None, alphas=None, alpha=0.8, bins=100, unit='us', x_log = True, bin_edges=None, grayscale=False):
+def draw_hist(datas, labels=None, alphas=None, alpha=0.8, bins=50, unit='us', x_log = True, bin_edges=None, grayscale=False):
     # Extract data, colors, hatches from dicts
     data_list = [d['data'] for d in datas]
     colors = [d['color'] for d in datas]
@@ -155,44 +155,35 @@ if __name__ == "__main__":
     print("--- Generating Graphs ---")
 
     ax = draw_hist(datas=[data_hifive_unmatched_stock, data_hifive_unmatched_rt], labels= [f"stock",f"preempt-rt"])
-    save(ax, f"linux_stock_vs_realtime_normalized", figure_dir)
-    ax.clear()    
+    save(ax, f"linux_stock_vs_realtime_normalized", figure_dir) 
     
     ax = draw_hist(datas=[data_keystone_mixted_stock, data_keystone_mixted_rt], labels=[f"stock", f"preempt-rt"])
     save(ax, f"keystone_mixted_stock_vs_realtime_normalized", figure_dir)
-    ax.clear()
-    """
+
     ax = draw_hist(datas=[data_hifive_unmatched_rt, data_keystone_mixted_rt], labels=[f"w/o keystone", f"w/ keystone"])
     save(ax, f"realtime_linux_vs_keystone_mixted_normalized", figure_dir)
-    ax.clear()
+
     
     ax = draw_hist(datas=[data_keystone_enclave_startup], labels=[f"startup"], bin_edges=np.logspace(np.log10(740000), np.log10(790000), 51))
     save(ax, f"keystone_enclave_startup", figure_dir)
-    ax.clear()
 
     ax = draw_hist(datas=[data_keystone_hybrid_1_stock, data_keystone_hybrid_1_rt], labels=[f"stock", f"preempt-rt"])
     save(ax, f"keystone_hybrid_stock_vs_realtime_1t_normalized", figure_dir)
-    ax.clear()
 
     ax = draw_hist(datas=[data_keystone_hybrid_2_stock, data_keystone_hybrid_2_rt], labels=[f"stock", f"preempt-rt"])
     save(ax, f"keystone_hybrid_stock_vs_realtime_2t_normalized", figure_dir)
-    ax.clear()
 
     ax = draw_hist(datas=[data_keystone_hybrid_1_rt, data_keystone_hybrid_2_rt], labels=[f"1 thread", f"2 threads"])
     save(ax, f"keystone_hybrid_realtime_1t_vs_2t_normalized", figure_dir)
-    ax.clear()
 
     ax = draw_hist(datas=[data_keystone_hybrid_1_stock, data_keystone_hybrid_2_stock], labels=[f"1 thread", f"2 threads"])
     save(ax, f"keystone_hybrid_stock_1t_vs_2t_normalized", figure_dir)
-    ax.clear()
     
     # Bonus
     ax = draw_hist(datas=[data_keystone_mixted_stock, data_keystone_hybrid_1_stock], labels=[f"Linux process", f"Keystone enclave"], alpha=1.0)
     save(ax, f"keystone_stock_mixted_vs_hybrid_normalized", figure_dir)
-    ax.clear()
 
     ax = draw_hist(datas=[data_keystone_mixted_rt, data_keystone_hybrid_1_rt], labels=[f"Linux process", f"Keystone enclave"], alphas=[0.8, 0.8])
     save(ax, f"keystone_realtime_mixted_vs_hybrid_normalized", figure_dir)
-    ax.clear()
-    """
+
     exit(0)

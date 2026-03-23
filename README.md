@@ -1,8 +1,8 @@
-# Keystone with Linux PREEMPT_RT: Real-Time Enclaves on RISC-V?
+# [Artifact] Keystone with Linux PREEMPT_RT: Real-Time Enclaves on RISC-V?
 
 This is the artifact for our **Keystone with Linux PREEMPT_RT: Real-Time Enclaves on RISC-V?** paper submitted at the SysTEX"26 workshop.
 
-This work aim at evaluating the impact of Keystone enclaves on a Linux system using the PREEMPT_RT patches. In particular, we focus on startup latencies of real-time tasks, both for mixted context (real-time task running along side Keystone enclave) and real-time enclave (Keystone enclave scheduled using real-time processes). The evaluation are done on a HiFive Unmatched Rev. B board.
+This work aims at evaluating the impact of Keystone enclaves on a Linux system using the PREEMPT_RT patches. In particular, we focus on startup latencies of real-time tasks, both for mixted context (real-time task running along side Keystone enclave) and real-time enclave (Keystone enclave scheduled using real-time processes). The evaluation are done on a HiFive Unmatched Rev. B board.
 
 This repo use a modified version of Keystone as a submodule. The main differences from the main keystone branch are:
 
@@ -19,17 +19,16 @@ git submodule update --init --recursive --depth 1
 
 > There may be an error when trying to clone the `keystone-for-realtime-linux/keystone-rt/overlays/keystone/board/cva6/cva6-sdk/buildroot` submodule, which can be safely ignore as it is not used for this work
 
-Keystone use Buildroot to build the systems. Since the build time can be quite significant (specially for fresh build), we provide ready to use image for the HiFive Unmatched board. This does method only require to have `git` and `dd` (or another tool to flash sd card).
+## Usage
 
+See the following docs
 
-If you want to build the image yourself to make some change, you will have some requirement for yourt system. Please refer to [docs/building.md.md](docs/building.md) in that case.
+- [Building the image](docs/building.md)
+    > Prebuilt image for HiFive Unmatched Rev. B are available in TODO since the build process can be very long.
+- [Preparing the board](docs/preparing-the-boards.md)
+- [Running the experiments](docs/running-the-experiments.md)
+- [Making the figures](docs/making-figures.md)
 
+## Citation
 
-
-## Experiments
-
-To run the same experiment as in our article, see [docs/running-the-experiments.md](docs/running-the-experiments.md)
-
-## License
-
-
+TODO

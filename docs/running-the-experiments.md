@@ -21,7 +21,7 @@ This experiment measure the startup scheduling latencies of high-priority Linux 
 The following command can be used to run this experiment:
 
 ```bash
-./run-linux-cyclictest.sh --duration 10m
+./run-linux-cyclictest.sh --duration 60m
 ```
 
 If the stressors are not skip (using `--skip-load`), it will as to start the iperf3 client (see [## Iperf3](##Iperf3)).
@@ -35,7 +35,7 @@ This experiment is basically the same as the previous one, but with the introduc
 The following command can be used to run this experiment:
 
 ```bash
-./run-linux-cyclictest.sh --duration 10m --enclave-loop
+./run-linux-cyclictest.sh --duration 60m --enclave-loop
 ```
 
 If the stressors are not skip (using `--skip-load`), it will as to start the iperf3 client (see [## Iperf3](##Iperf3)).
@@ -56,9 +56,9 @@ You can adjust the number of threads and iteration for each, as well as the init
 
 If the stressors are not skip (using `--skip-load`), it will as to start the iperf3 client (see [## Iperf3](##Iperf3)).
 
-> Due to an issue from Keystone, creating more than ~150 enclaves from a process will likely result in core halt. To get more measurement, you can simply save the `cyclictest.log` file then re-run the same cmd.
+> Due to an issue from Keystone, creating more than ~150 enclaves from a process will likely result in core halt. To get more measurement, you can simply save the `cyclictest.log` file then re-run the same experiment and combine the measurements.
 
-> Due to an issu from the HiFive Unmatched board, where some core seems to have an hardware wearout, you may want to fix the exact cores used with `--cpu`.
+> Due to an issu from the HiFive Unmatched board, where some core's PMP seems to have an hardware wearout. You may want to fix the exact cores used with `--cpu`.
 
 The latencies are recorded in the `cyclictest.log` file.
 

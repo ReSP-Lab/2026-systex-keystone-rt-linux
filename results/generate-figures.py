@@ -21,7 +21,7 @@ def load(name, start_skip = 0, skiprows=9):
 
     print(f"Data loaded: {name}")
 
-    print(f'\tN:\t{len(data['Latency'])}')
+    print(f'\tN:\t{len(data["Latency"])}')
     print(f'\tAvg:\t{data["Latency"].mean()}')
     print(f'\tStd:\t{data["Latency"].std()}')
     print(f'\t95th:\t{data["Latency"].quantile(q=0.95)}')
@@ -163,6 +163,8 @@ if __name__ == "__main__":
     ax = draw_hist(datas=[data_hifive_unmatched_rt, data_keystone_mixted_rt], labels=[f"w/o keystone", f"w/ keystone"])
     save(ax, f"realtime_linux_vs_keystone_mixted_normalized", figure_dir)
 
+    ax = draw_hist(datas=[data_hifive_unmatched_stock, data_keystone_mixted_stock], labels=[f"w/o keystone", f"w/ keystone"])
+    save(ax, f"stock_linux_vs_keystone_mixted_normalized", figure_dir)
     
     ax = draw_hist(datas=[data_keystone_enclave_startup], labels=[f"startup"], bin_edges=np.logspace(np.log10(740000), np.log10(790000), 51))
     save(ax, f"keystone_enclave_startup", figure_dir)
@@ -179,7 +181,6 @@ if __name__ == "__main__":
     ax = draw_hist(datas=[data_keystone_hybrid_1_stock, data_keystone_hybrid_2_stock], labels=[f"1 thread", f"2 threads"])
     save(ax, f"keystone_hybrid_stock_1t_vs_2t_normalized", figure_dir)
     
-    # Bonus
     ax = draw_hist(datas=[data_keystone_mixted_stock, data_keystone_hybrid_1_stock], labels=[f"Linux process", f"Keystone enclave"], alpha=1.0)
     save(ax, f"keystone_stock_mixted_vs_hybrid_normalized", figure_dir)
 

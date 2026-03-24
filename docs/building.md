@@ -40,7 +40,7 @@ You can simply initialise all of them using:
 git submodule update --init --recursive --depth 1
 ```
 
-> There may be an error when trying to clone the `keystone-for-realtime-linux/keystone-rt/overlays/keystone/board/cva6/cva6-sdk/buildroot` submodule, which can be safely ignored as it is not used for this work.
+> There may be an error when trying to initiate the `keystone-for-realtime-linux/keystone-rt/overlays/keystone/board/cva6/cva6-sdk/...` submodules, which can be safely ignored as it is not used for this work.
 
 ## Platform and variant selection
 

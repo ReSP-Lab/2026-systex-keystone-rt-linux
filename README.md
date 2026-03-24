@@ -16,7 +16,7 @@ This repo uses a changed version of Keystone as a submodule. The main difference
 See the following docs
 
 - [Building the image](docs/building.md)
-    > The build time can take several hours. Therefore, prebuilt images for HiFive Unmatched Rev. B are available in `prebuilt-images/`.
+    > The builds can take several hours. Therefore, prebuilt images for HiFive Unmatched Rev. B are available in `prebuilt-images/`.
 - [Preparing the board](docs/preparing-the-boards.md)
 - [Running the experiments](docs/running-the-experiments.md)
 - [Making the figures](docs/making-figures.md)

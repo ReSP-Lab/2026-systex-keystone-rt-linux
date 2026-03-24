@@ -16,9 +16,9 @@ While Keystone originally supported both QEMU and HiFive Unmatched Rev. B platfo
 
 Keystone documentation recommends using Ubuntu 16.04/18.04/20.04 and derivatives. This artifact has been tested on Ubuntu 20.04.6.
 
-To reduce the build time, it is recommended the most cores and RAM possible. We tested on a 16 cores / 64 GB system that already had all packages cached (no download needed). Build time can take several hours, specially for first run.
+To reduce the build time, it is recommended the most cores and RAM possible. We tested on a 16 cores / 64 GB system. Build time can take several hours, specially for first run.
 
-The following dependencies are required to build the systems using buildroot:
+The following dependencies (from keystone) are required to build the systems:
 
 ```bash
 sudo apt update

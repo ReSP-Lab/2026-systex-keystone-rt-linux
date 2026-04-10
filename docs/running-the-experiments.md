@@ -39,7 +39,7 @@ The following command can be used to run this experiment:
 ./run-linux-cyclictest.sh --duration 60m
 ```
 
-If the stressors are not skipped (using `--skip-load`), it will ask to start the iperf3 client (see [## Stressors](##Stressors)).
+If the stressors are not skipped (using `--skip-load`), it will ask to start the iperf3 client (see [## Stressors](#stressors)).
 
 The latencies are recorded in the `cyclictest.log` file, starting directly after the start of the stressors. During the compilation of the graph, the first X samples can be remove to exclude the impact of a transition period (see [docs/making-figures.md](making-figures.md))
 
@@ -55,7 +55,7 @@ The following command can be used to run this experiment:
 
 The `--enclave-loop` argument is used to also call the `run-enclave-loop.sh` script that run the `loop-task.ke` enclave in background.
 
-If the stressors are not skipped (using `--skip-load`), it will ask to start the iperf3 client (see [## Stressors](##Stressors)).
+If the stressors are not skipped (using `--skip-load`), it will ask to start the iperf3 client (see [## Stressors](#stressors)).
 
 The latencies are recorded in the `cyclictest.log` file, starting directly after the start of the stressors. During the compilation of the graph, the first X samples can be remove to exclude the impact of a transition period (see [docs/making-figures.md](making-figures.md))
 
@@ -73,7 +73,7 @@ This script use the `cyclictest.ke` enclave that spawn the measurement task insi
 
 You can adjust the number of threads and iterations for each, as well as the initial delay to ensure the system is under load when we start the measurement.
 
-If the stressors are not skipped (using `--skip-load`), it will ask to start the iperf3 client (see [## Stressors](##Stressors)).
+If the stressors are not skipped (using `--skip-load`), it will ask to start the iperf3 client (see [## Stressors](#stressors)).
 
 > Due to an issue from Keystone, creating more than ~150 enclaves from a process will likely result in core halt. To get more measurements, you can simply save the `cyclictest.log` file then re-run the same experiment and combine the measurements.
 
